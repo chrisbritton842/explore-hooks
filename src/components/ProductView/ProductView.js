@@ -6,16 +6,24 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 
 function ProductView({ products }) {
-    const [sideOpen, setSideOpen] = useState(true);
-    const [product, setProduct] = useState();
+    const [sideOpen, setSideOpen] = useState(JSON.parse(localStorage.getItem('openState')) || false);
+    const [product, setProduct] = useState();            // true false
     const [selectedProduct, setSelectedProduct] = useState()
+    console.log(sideOpen);
+    useEffect(() => {
+        localStorage.setItem('openState', `${sideOpen}`)
+    }, [sideOpen])
 
     useEffect(() => {
-        setSideOpen(true);
+        if (selectedProduct) {
+            setSideOpen(true);
+        }
     }, [selectedProduct]);
 
     useEffect(() => {
-        setSelectedProduct();
+        if (!sideOpen) {
+            setSelectedProduct();
+        }
     }, [sideOpen]);
 
     return (
